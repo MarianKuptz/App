@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+   <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://schlaglochapp.azurewebsites.net; style-src 'self'; media-src *"> -->
+    <meta http-equiv="Content-Security-Policy" content="default-src* 'unfsafe-eval' unsafe-inline'"/>
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+
+    <!--CSS Dateien-->
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+
+
+
+
+    <!--Java Script Dateien-->
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="application/javascrip" src="googlemaps/google_maps.js"></script>
+
+
+
+
+</head>
+<body>
+        <header>
+            <h2>Maps</h2>
+        </header>
+        <div id="map" style="height:300px">
+             <script type="text/javascript">
+         var map;
+         function initMap() {
+             map = new google.maps.Map(document.getElementById('map'), {
+                  center:{lat:-34.397, lng:150.644},
+               //  center:{lat:laengengrad, lng:breitengrad},
+                 zoom:8
+             });
+         }
+
+     </script>
+
+            
+        </div>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZlxvYWfTA2DNdWBhcvcMfX45dR2YMzgE&callback=initMap">
+        </script>
+
+    
+</body>
+</html>

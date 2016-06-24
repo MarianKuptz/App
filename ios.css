@@ -1,0 +1,8 @@
+﻿/* Header für iOS 7 */
+div[data-role=page] .ui-header {
+    padding-top: 20px;
+}
+div[data-role=page] .ui-header .ui-btn {
+    top: 27px;
+}
+

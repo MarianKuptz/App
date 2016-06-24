@@ -1,0 +1,34 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.microsoft.azure.mobileapps.SchlaglochApp"
+        },
+        "cordova-plugin-ms-azure-mobile-apps": {
+            "PACKAGE_NAME": "com.microsoft.azure.mobileapps.SchlaglochApp"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.microsoft.azure.mobileapps.SchlaglochApp"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.microsoft.azure.mobileapps.SchlaglochApp"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.microsoft.azure.mobileapps.SchlaglochApp"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "com.microsoft.azure.mobileapps.SchlaglochApp"
+        },
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.microsoft.azure.mobileapps.SchlaglochApp"
+        }
+    }
+}

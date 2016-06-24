@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://schlaglochapp.azurewebsites.net; style-src 'self'; media-src *">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+
+    <!--CSS Dateien-->
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+
+
+
+
+    <!--Java Script Dateien-->
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+
+</head>
+<body>
+    <header>
+        <h2>Foto</h2>
+    </header>
+    <div id="wrapper">
+        <img id="imgFotoSchlagloch" />
+        <div class="text-container" id="txtFotoGPSKoordinaten">
+            <!-- Text via JavaScript -->
+        </div>
+        <button id="btn_Foto">Neues Foto schießen</button>
+
+        <form id='add-item'>
+       <!--     <button type='submit' id='refresh'>Refresh</button> -->
+            <div><input type='text' id='new-item-text' placeholder='Beschreibung eingeben' /></div>
+            <button type='submit'>Schlagloch hinzufuegen</button>
+     
+        </form>
+
+
+        <ul id='todo-items'></ul>
+        <p id='summary'>Initializing...</p>
+
+    </div>
+</body>
+</html>
