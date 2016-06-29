@@ -1,32 +1,20 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
 (function () {
     "use strict";
 
     var client,             // Connection to the Azure Mobile App backend
-       todoItemTable, table_Schlagloch;      // Reference to a table endpoint on backend
-     var laengengrad;
-    var breitengrad;
+            table_Schlagloch;      // Reference to a table endpoint on backend
+     var image;
+     var beschreibung, breitengrad, laengengrad, marker;
+     var aktPosLaengengrad, aktPosBreitengrad;
+     var schlaglochArray;
+     schlaglochArray = new Array();
+     var i;
 
-    // Add an event listener to call our initialization routine when the host is ready
-    document.addEventListener('deviceready', onDeviceReady, false);
 
+     //Add an event listener to call our initialization routine when the host is ready
+     document.addEventListener('deviceready', onDeviceReady, false);
+     
     /**
      * Event Handler, called when the host is ready
      *
@@ -37,75 +25,69 @@
         client = new WindowsAzure.MobileServiceClient('https://schlaglochapp.azurewebsites.net');
 
         // Create a table reference
-      //  todoItemTable = client.getTable('todoitem');
         table_Schlagloch = client.getTable('table_Schlagloch');
-
-        // Refresh the todoItems
-      //  refreshDisplay();
-
-        // Wire up the UI Event Handler for the Add Item
-        $('#add-item').submit(addItemHandler);
-     //   $('#refresh').on('click', refreshDisplay);
-
-        GPSCheckUp();
-        $('#btn_Foto').on('click', foto);
        
+        //open Foto
+        $('#btn_Foto').on('click', foto);
+
+        //adding Schlagloch to Azure
+        $('#hinzufuegen').on('click', addItemHandler);
+
+        //Get current position
+        GPSCheckUp();
+
+       // Refresh the todoItems
+        getDataAzure();
+        
     }
 
-    /**
-     * Refresh the items within the page
-     */
-    /*function refreshDisplay() {
-        updateSummaryMessage('Loading Data from Azure');
-
-        // Execute a query for uncompleted items and process
-        todoItemTable
+    function getDataAzure() {
+       // Execute a query for uncompleted items and process
+        table_Schlagloch
             .where({ complete: false })     // Set up the query
             .read()                         // Read the results
-            .then(createTodoItemList, handleError);
-    }*/
-
-    /**
-     * Updates the Summary Message
-     * @param {string} msg the message to use
-     * @returns {void}
-     */
-    function updateSummaryMessage(msg) {
-        $('#summary').html(msg);
+            .then(createSchlaglochList, handleError);
     }
 
-    /**
-     * Create the DOM for a single todo item
-     * @param {Object} item the Todo Item
-     * @param {string} item.id the ID of the item
-     * @param {bool} item.complete true if the item is completed
-     * @param {string} item.text the text value
-     * @returns {jQuery} jQuery DOM object
-     */
-    function createTodoItem(item) {
-        return $('<li>')
-            .attr('data-todoitem-id', item.id)
-            .append($('<button class="item-delete">Delete</button>'))
-            .append($('<input type="checkbox" class="item-complete">').prop('checked', item.complete))
-            .append($('<div>').append($('<input class="item-text">').val(item.text)));
+
+    function createSchlagloch(item) {
+        //save each Schlagloch from azure to array
+        var string = item.breitengrad + ";" + item.laengengrad +";"+item.beschreibung;
+        schlaglochArray[i] = string;
+        i = i + 1;
+
     }
 
-    /**
-     * Create a list of Todo Items
-     * @param {TodoItem[]} items an array of todoitem objects
-     * @returns {void}
-     */
-    function createTodoItemList(items) {
+    function createSchlaglochList(items) {
         // Cycle through each item received from Azure and add items to the item list
-        var listItems = $.map(items, createTodoItem);
-        $('#todo-items').empty().append(listItems).toggle(listItems.length > 0);
-        $('#summary').html('<strong>' + items.length + '</strong> item(s)');
+        i = 0;
+        var listItems = $.map(items, createSchlagloch);
+      
+        //Set Map
+        var curPos = { lat: aktPosBreitengrad, lng:aktPosLaengengrad};
+        var map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            center: curPos
+        });
 
-        // Wire up the event handlers for each item in the list
-        $('.item-delete').on('click', deleteItemHandler);
-        $('.item-text').on('change', updateItemTextHandler);
-        $('.item-complete').on('change', updateItemCompleteHandler);
-    }
+        //set Marker
+        for (var j = 0; j < schlaglochArray.length; j++)
+        {
+            //split spring of index
+            var coordinaten = schlaglochArray[j].split(';');
+            var beschreib = coordinaten[2];
+            var beschreibIndex = 0;
+
+            //set Marker to Map
+            var location = new google.maps.LatLng( coordinaten[0], coordinaten[1]);
+            marker = new google.maps.Marker({
+                position: location,
+                label: beschreib[beschreibIndex++ % beschreib.length],
+                map: map
+            });
+        }
+}
 
     /**
      * Handle error conditions
@@ -118,15 +100,6 @@
         $('#errorlog').append($('<li>').text(text));
     }
 
-    /**
-     * Given a sub-element of an LI, find the TodoItem ID associated with the list member
-     *
-     * @param {DOMElement} el the form element
-     * @returns {string} the ID of the TodoItem
-     */
-    function getTodoItemId(el) {
-        return $(el).closest('li').attr('data-todoitem-id');
-    }
 
     /**
      * Event handler for when the user enters some text and clicks on Add
@@ -134,99 +107,32 @@
      * @returns {void}
      */
     function addItemHandler(event) {
-       /* var textbox = $('#new-item-text'),
-            itemText = textbox.val();
-
-        updateSummaryMessage('Adding New Item');
-        if (itemText !== '') {
-            todoItemTable.insert({
-                text: itemText,
-                complete: false
-            }).then(refreshDisplay, handleError);
-        }
-
-        textbox.val('').focus();
-        event.preventDefault(); */
-
-
-        var textbox = $('#new-item-text'),
+       var textbox = $('#new-item-text'),
            itemText = textbox.val();
 
-       updateSummaryMessage('Adding New Item');
        if (itemText !== '') {
-          table_Schlagloch.insert({
+           table_Schlagloch.insert({
               beschreibung: itemText,
-              breitengrad: breitengrad,
-              laengengrad:laengengrad,
-               complete: false
+              breitengrad: aktPosBreitengrad,
+              laengengrad: aktPosLaengengrad,               
+              complete: false
            }).then(handleError);
+           alert("Schlagloch erfolgreich hinzugefügt");
        }
 
        textbox.val('').focus();
        event.preventDefault(); 
         
-
-
-
     }
 
-    /**
-     * Event handler for when the user clicks on Delete next to a todo item
-     * @param {Event} event the event that caused the request
-     * @returns {void}
-     */
-    function deleteItemHandler(event) {
-        var itemId = getTodoItemId(event.currentTarget);
-
-        updateSummaryMessage('Deleting Item in Azure');
-        todoItemTable
-            .del({ id: itemId })   // Async send the deletion to backend
-            .then(refreshDisplay, handleError); // Update the UI
-        event.preventDefault();
-    }
-
-    /**
-     * Event handler for when the user updates the text of a todo item
-     * @param {Event} event the event that caused the request
-     * @returns {void}
-     */
-    function updateItemTextHandler(event) {
-        var itemId = getTodoItemId(event.currentTarget),
-            newText = $(event.currentTarget).val();
-
-        updateSummaryMessage('Updating Item in Azure');
-        todoItemTable
-            .update({ id: itemId, text: newText })  // Async send the update to backend
-            .then(refreshDisplay, handleError); // Update the UI
-        event.preventDefault();
-    }
-
-    /**
-     * Event handler for when the user updates the completed checkbox of a todo item
-     * @param {Event} event the event that caused the request
-     * @returns {void}
-     */
-    function updateItemCompleteHandler(event) {
-        var itemId = getTodoItemId(event.currentTarget),
-            isComplete = $(event.currentTarget).prop('checked');
-
-        updateSummaryMessage('Updating Item in Azure');
-        todoItemTable
-            .update({ id: itemId, complete: isComplete })  // Async send the update to backend
-            .then(refreshDisplay, handleError);        // Update the UI
-    }
-
-    //Überprüfen ob GPS akiv ist
+    //Check if GPS is aktiv and get current position
     function GPSCheckUp(){
 
         var onSuccess = function(position) {
-           /* alert('Latitude: '          + position.coords.latitude          + '\n' +
-                  'Longitude: '         + position.coords.longitude         + '\n'
-                 );*/
-            // $('#txtHomescreenGPSCheckUp').append('<p>GPS ist aktiv!</p>');
-            laengengrad = position.coords.latitude;
-            breitengrad = position.coords.longitude;
-            $('#txtFotoGPSKoordinaten').append('<p> GPS Koordinaten:<br> Laengengrad: ' + position.coords.latitude + '<br> Breitengrad: ' + position.coords.longitude + '</p>');
+           // $('#txtHomescreenGPSCheckUp').append('<p>GPS ist aktiv!</p>');
+            aktPosBreitengrad = position.coords.latitude;
+            aktPosLaengengrad = position.coords.longitude;
+            $('#txtFotoGPSKoordinaten').append('<p> GPS Koordinaten:<br> Breitengrad: ' + position.coords.latitude + '<br> Laengengrad: ' + position.coords.longitude + '</p>');
         
 
         };
@@ -242,22 +148,29 @@
 
     }
 
-    //Foto schießen
+    //take foto
     function foto() {
 
         navigator.camera.getPicture(onSuccess, onFail, {
             quality: 50,
-            destinationType: Camera.DestinationType.DATA_URL
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: 1,
+            endcodingType: 0
         });
         function onSuccess(imageData) {
-            var image = document.getElementById('myImage');
-            image.src = "data:image/jpeg;base64" + imageData;
-            $('imgFotoSchlagloch').append('src=' + image);
+
+           var image = "data:image/jpeg;base64," + imageData;
+          
+            $('#imgFotoSchlagloch').attr('src', image);
+            var image = imageData;
         }
+        
+
         function onFail(message) {
             console.log('failed because: ' + message);
         }
     }
-
-
+    
+    
+  
 })();

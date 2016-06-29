@@ -1,0 +1,34 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "{8c661660-3c36-11e6-82f2-916cddd46e2a}"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "{8c661660-3c36-11e6-82f2-916cddd46e2a}"
+        },
+        "cordova-plugin-ms-azure-mobile-apps": {
+            "PACKAGE_NAME": "{8c661660-3c36-11e6-82f2-916cddd46e2a}"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "{8c661660-3c36-11e6-82f2-916cddd46e2a}"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "{8c661660-3c36-11e6-82f2-916cddd46e2a}"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "{8c661660-3c36-11e6-82f2-916cddd46e2a}"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "{8c661660-3c36-11e6-82f2-916cddd46e2a}"
+        }
+    }
+}

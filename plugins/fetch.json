@@ -1,18 +1,10 @@
 {
-    "cordova-plugin-whitelist": {
+    "cordova-plugin-compat": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-whitelist@1"
+            "id": "cordova-plugin-compat"
         },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-ms-azure-mobile-apps": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-ms-azure-mobile-apps@~2.0.0-beta"
-        },
-        "is_top_level": true,
+        "is_top_level": false,
         "variables": {}
     },
     "cordova-plugin-inappbrowser": {
@@ -23,12 +15,28 @@
         "is_top_level": false,
         "variables": {}
     },
-    "cordova-sqlite-storage": {
+    "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
-            "id": "cordova-sqlite-storage"
+            "id": "cordova-plugin-whitelist"
         },
-        "is_top_level": false,
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-sqlite-storage": {
+        "source": {
+            "type": "local",
+            "path": "C:\\Users\\m.kuptz\\Downloads\\Cordova-sqlite-storage-storage-master"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-ms-azure-mobile-apps": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-ms-azure-mobile-apps"
+        },
+        "is_top_level": true,
         "variables": {}
     },
     "cordova-plugin-camera": {
@@ -37,14 +45,6 @@
             "id": "cordova-plugin-camera"
         },
         "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-compat": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-compat"
-        },
-        "is_top_level": false,
         "variables": {}
     },
     "cordova-plugin-geolocation": {

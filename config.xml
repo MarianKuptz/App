@@ -11,7 +11,6 @@
   <preference name="SplashScreen" value="screen" />
   <preference name="windows-target-version" value="8.1" />
   <!-- Support for Cordova 5.0.0 plugin system -->
-  <plugin name="cordova-plugin-whitelist" version="1" />
   <allow-intent href="http://*/*" />
   <allow-intent href="https://*/*" />
   <allow-intent href="tel:*" />
@@ -106,9 +105,11 @@
   <platform name="wp8">
     <splash src="res/screens/wp8/SplashScreenImage.jpg" width="480" height="800" />
   </platform>
-  <plugin name="cordova-plugin-ms-azure-mobile-apps" spec="~2.0.0-beta" />
+  <plugin name="cordova-plugin-compat" version="1.0.0" />
   <plugin name="cordova-plugin-inappbrowser" version="1.4.0" />
-  <plugin name="cordova-sqlite-storage" version="1.4.3" />
+  <plugin name="cordova-plugin-whitelist" version="1.2.2" />
+  <plugin name="cordova-sqlite-storage" version="1.4.3" src="C:\Users\m.kuptz\Downloads\Cordova-sqlite-storage-storage-master" />
+  <plugin name="cordova-plugin-ms-azure-mobile-apps" version="2.0.0-beta5" />
   <plugin name="cordova-plugin-camera" version="2.2.0" />
   <plugin name="cordova-plugin-geolocation" version="2.2.0" />
 </widget>
