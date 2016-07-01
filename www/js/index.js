@@ -115,9 +115,10 @@
               beschreibung: itemText,
               breitengrad: aktPosBreitengrad,
               laengengrad: aktPosLaengengrad,               
-              complete: false
+              complete: false,
+              foto:image
            }).then(handleError);
-           alert("Schlagloch erfolgreich hinzugefügt");
+           alert("Schlagloch erfolgreich hinzugefÃ¼gt");
        }
 
        textbox.val('').focus();
